@@ -1,50 +1,43 @@
+/* Set the background color of the entire page */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
+    background-color: #ADD8E6; /* Baby blue color */
+    font-family: "American Typewriter", serif; /* Set the font to American Typewriter */
+    color: #333; /* A nice dark color for the text */
 }
 
-nav {
-    background-color: #333;
-    padding: 10px;
-    text-align: center;
-}
-
+/* Make the navigation links stand out */
 nav a {
-    color: white;
-    margin: 0 15px;
-    text-decoration: none;
-}
-
-h1 {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.assignment-card {
-    background-color: white;
-    padding: 20px;
-    margin: 20px auto;
-    width: 80%;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
-
-.btn {
-    background-color: #007bff;
-    color: white;
+    color: #fff;
+    background-color: #333;
     padding: 10px 15px;
     text-decoration: none;
     border-radius: 5px;
 }
 
-.btn:hover {
-    background-color: #0056b3;
+/* Style for assignment cards */
+.assignment-card {
+    background-color: #fff;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for buttons */
+.btn {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+h1, h3 {
+    color: #333; /* Darker color for headings */
 }
 
 footer {
     text-align: center;
-    padding: 20px;
-    background-color: #333;
-    color: white;
+    margin-top: 50px;
+    color: #333;
 }
