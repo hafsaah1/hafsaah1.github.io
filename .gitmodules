@@ -1,6 +1,3 @@
 [submodule "bu_username-assignment-0"]
     path = bu_username-assignment-0
     url = https://github.com/hafsaah1/bu_username-assignment-0.git
-[submodule "CS506-Fall2024"]
-    path = CS506-Fall2024
-    url = https://github.com/hafsaah1/CS506-Fall2024.git
