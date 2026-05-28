@@ -1,0 +1,26 @@
+---
+import Notebook from '../../layouts/Notebook.astro';
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('projects'))
+  .sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
+const fmt = (d?: Date) => (d ? d.getFullYear() : '');
+---
+<Notebook title="projects">
+  <p style="opacity:.8">things i've built. newest first.</p>
+  <br />
+  {projects.map((p) => (
+    <div class="entry">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">
+        <a class="title" href={`/projects/${p.id}`}>{p.data.title}</a>
+        <span class={`status ${p.data.status}`}>{p.data.status}</span>
+      </div>
+      {p.data.tagline && <div class="tagline">{p.data.tagline}</div>}
+      <div class="meta">{fmt(p.data.started)}{p.data.finished ? `–${fmt(p.data.finished)}` : ''}</div>
+      <div class="tags">
+        {p.data.tags.map((t) => <a class="tag" href={`/tags/${t}`}>{t}</a>)}
+      </div>
+    </div>
+  ))}
+  {projects.length === 0 && <p>no projects yet — add a markdown file in <code>src/content/projects/</code>.</p>}
+</Notebook>

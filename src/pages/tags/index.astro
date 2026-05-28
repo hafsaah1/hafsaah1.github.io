@@ -1,0 +1,18 @@
+---
+import Notebook from '../../layouts/Notebook.astro';
+import { getCollection } from 'astro:content';
+
+const projects = await getCollection('projects');
+const posts = await getCollection('blog');
+const counts: Record<string, number> = {};
+for (const e of [...projects, ...posts]) for (const t of e.data.tags) counts[t] = (counts[t] || 0) + 1;
+const tags = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+---
+<Notebook title="tags">
+  <p style="opacity:.8">everything, sorted by topic.</p>
+  <br />
+  <div class="tags" style="gap:8px">
+    {tags.map(([t, n]) => <a class="tag" href={`/tags/${t}`}>{t} · {n}</a>)}
+  </div>
+  {tags.length === 0 && <p>no tags yet.</p>}
+</Notebook>

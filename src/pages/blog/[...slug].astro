@@ -1,0 +1,21 @@
+---
+import Notebook from '../../layouts/Notebook.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((p) => ({ params: { slug: p.id }, props: { entry: p } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+---
+<Notebook title={d.title}>
+  <div class="meta" style="margin-bottom:6px">{d.published.toISOString().slice(0, 10)}</div>
+  <div class="tags">{d.tags.map((t) => <a class="tag" href={`/tags/${t}`}>{t}</a>)}</div>
+  <hr style="border:none;border-top:1px dashed var(--lightborder);margin:10px 0" />
+  <Content />
+  <br />
+  <p><a href="/blog">← back to blog</a></p>
+</Notebook>

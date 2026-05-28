@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&display=swap');
+
+:root {
+  --grid: rgba(14, 34, 51, 0.10);
+  --lightborder: rgba(14, 34, 51, 0.22);
+  --heavyborder: rgba(14, 34, 51, 0.5);
+  --paper: #fffef5;          /* cream notebook page */
+  --babyblue: #89CFF0;       /* outer surround */
+  --ink: #0e2233;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: var(--ink);
+  font-family: 'Gaegu', 'Comic Sans MS', system-ui, sans-serif;
+  font-size: 1.5vh;
+  background-color: var(--babyblue);
+  background-image: url("/texture.svg");
+  background-size: 240px 240px;
+  background-repeat: repeat;
+}
+
+h1 { font-size: 3vh; font-weight: 700; }
+h2 { font-size: 2.6vh; font-weight: 700; text-decoration: underline; margin: 0.6em 0 0.3em; }
+h3 { font-size: 2.3vh; font-weight: 700; }
+
+a { color: var(--ink); }
+a:hover { opacity: 0.7; }
+
+.handwritten { font-family: 'Gaegu', sans-serif; font-size: 2.5vh; line-height: 1.1em; }
+
+/* ---------- the notebook ---------- */
+.hobonichi-layout {
+  width: 92vh;
+  height: 90vh;
+  display: flex;
+  background-color: var(--paper);
+  box-shadow: 6px 6px 3px rgba(20, 40, 60, 0.25), 5px 0 5px #e8dfca inset;
+  border-radius: 1em;
+  overflow: hidden;
+  border: 0.1em solid var(--heavyborder);
+}
+.left-page { width: 50%; height: 100%; border-right: 1px solid var(--lightborder); display: flex; flex-direction: column; }
+.right-page { width: 50%; height: 100%; display: flex; flex-direction: column; }
+
+.header { height: 6%; display: flex; align-items: center; flex-shrink: 0; }
+.header h1 { margin-left: 4%; }
+
+/* ---------- left planner page ---------- */
+.day { height: 12%; display: flex; align-items: center; flex-shrink: 0; }
+.date {
+  height: 100%;
+  margin-left: 4%;
+  width: 12%;
+  border-top: 1px solid var(--lightborder);
+  border-left: 1px dotted var(--lightborder);
+  border-right: 1px dotted var(--lightborder);
+  display: flex; flex-direction: column; align-items: center; justify-content: space-evenly;
+  text-align: center;
+}
+.date.today-highlight { background-color: rgba(14, 34, 51, 0.08); }
+.date.sun { color: #d23; }
+
+.menu1 {
+  height: 100%; width: 64%;
+  border-top: 1px solid var(--lightborder);
+  display: flex; align-items: center; padding-left: 6%; white-space: nowrap;
+}
+.menu3 {
+  height: 100%; width: 24%;
+  border-top: 1px solid var(--lightborder);
+  border-right: 1px solid var(--lightborder);
+  margin-right: 4%;
+}
+.menu1 a { text-decoration: none; }
+.menu1 a:hover { text-decoration: underline; }
+.menu1 a.active { text-decoration: underline; font-weight: 700; }
+
+.day.last-day .date, .day.last-day .menu1, .day.last-day .menu3 { border-bottom: 1px solid var(--lightborder); }
+
+.quote { height: 12%; display: flex; align-items: center; flex-shrink: 0; }
+.quote .lyrics { margin-left: 6%; font-size: 2vh; opacity: 0.85; }
+
+/* ---------- right page notes ---------- */
+.notes {
+  width: 92%; height: 84%;
+  margin: 0 4%;
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: calc(100% / 23) calc(100% / 30);
+  border: 1px dotted var(--grid);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  padding: 0.8em 1em;
+  flex: 1;
+}
+.notes p { margin-bottom: 0.7em; }
+.notes a { text-decoration: underline; }
+.notes img { max-width: 100%; display: block; margin: 0.5em auto; border: 1px solid var(--lightborder); }
+.notes ul { padding-left: 1.2em; }
+.notes ul li { list-style: none; }
+.notes ul li::before { content: '✦ '; opacity: 0.6; }
+.notes pre {
+  background: #fbf8ec; border: 1px solid var(--lightborder);
+  border-radius: 6px; padding: 0.6em 0.8em; overflow-x: auto; font-size: 0.85em;
+}
+.notes blockquote {
+  border-left: 3px solid var(--lightborder); padding-left: 0.8em;
+  margin: 0.6em 0; opacity: 0.85;
+}
+
+/* entry list (projects / posts) */
+.entry { padding: 0.5em 0; border-bottom: 1px dashed var(--lightborder); }
+.entry:last-child { border-bottom: none; }
+.entry a.title { text-decoration: none; font-weight: 700; font-size: 2.2vh; }
+.entry a.title:hover { text-decoration: underline; }
+.entry .tagline { opacity: 0.8; }
+.entry .meta { font-size: 1.7vh; opacity: 0.7; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px; }
+.tag {
+  font-size: 1.7vh; line-height: 1;
+  border: 1px solid var(--lightborder); border-radius: 999px;
+  padding: 2px 8px; text-decoration: none;
+}
+.tag:hover { border-color: var(--heavyborder); opacity: 1; }
+
+.status {
+  font-size: 1.5vh; text-transform: uppercase; letter-spacing: 0.04em;
+  border: 1px solid var(--lightborder); border-radius: 999px; padding: 1px 7px;
+}
+.status.finished { background: #d8f5e3; }
+.status.ongoing, .status.wip { background: #fff0d6; }
+.status.scrapped { background: #fbdcd6; }
+
+.btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
+.btn { border: 1px solid var(--heavyborder); border-radius: 6px; padding: 3px 10px; text-decoration: none; background: var(--paper); }
+.btn:hover { opacity: 1; background: #f3eede; }
+
+/* simple guestbook form */
+.gb-form { display: flex; flex-direction: column; gap: 8px; max-width: 90%; }
+.gb-form input, .gb-form textarea {
+  font-family: 'Gaegu', sans-serif; font-size: 2vh;
+  border: 1px solid var(--heavyborder); background: none; padding: 4px 8px;
+}
+.gb-form textarea { resize: vertical; min-height: 4em; }
+.gb-form .btn { align-self: flex-start; cursor: pointer; }
+
+/* ---------- bottom quote + corner calendar ---------- */
+.right-page .quote { height: 12%; padding-right: 4%; }
+.quote-author { height: 100%; width: 78%; display: flex; flex-direction: column-reverse; padding-bottom: 4%; margin-left: 6%; }
+.corner-calendar { height: 86%; width: 22%; margin-right: 4%; display: flex; flex-direction: column; }
+.calendar-wrapper { position: relative; width: 100%; height: 100%; overflow: hidden; }
+.calendar { display: grid; grid-template-columns: repeat(7, 1fr); width: 100%; height: 100%; }
+.calendar > div { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; font-size: 0.8em; overflow: hidden; }
+.day-label { font-weight: 700; }
+.calendar .today { font-weight: 700; background: rgba(14,34,51,0.10); border-radius: 50%; }
+.calendar .prev { opacity: 0.35; }
+.calendar .saturday { color: #666; }
+.calendar .sunday { color: #d23; }
+.current-week-border { position: absolute; border: 0.12em solid #666; border-radius: 0.8em; pointer-events: none; z-index: 0; box-sizing: border-box; }
+
+/* ---------- buttons ---------- */
+.menu-button {
+  border: 1px solid var(--heavyborder); border-radius: 5px; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  background-color: var(--paper); padding: 0.2em 0.4em; height: 1.6em; width: 1.6em; margin-left: 1em;
+  font-family: inherit;
+}
+.flip-page { visibility: hidden; }
+
+/* ---------- mobile: one page at a time ---------- */
+@media (max-width: 768px) {
+  body { overflow: hidden; }
+  .hobonichi-layout { width: 94vw; height: 92vh; flex-direction: column; }
+  .left-page, .right-page { width: 100%; height: 100%; border: none; display: none; }
+  .page.visible { display: flex; }
+  .flip-page { visibility: visible; }
+  .header { justify-content: space-between; padding-right: 1em; }
+}

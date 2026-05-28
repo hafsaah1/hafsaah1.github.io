@@ -1,0 +1,36 @@
+---
+import Notebook from '../../layouts/Notebook.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  const posts = await getCollection('blog');
+  const all = new Set<string>();
+  for (const e of [...projects, ...posts]) e.data.tags.forEach((t) => all.add(t));
+  return [...all].map((tag) => ({
+    params: { tag },
+    props: {
+      tag,
+      projects: projects.filter((p) => p.data.tags.includes(tag)),
+      posts: posts.filter((p) => p.data.tags.includes(tag)),
+    },
+  }));
+}
+
+const { tag, projects, posts } = Astro.props;
+---
+<Notebook title={`#${tag}`}>
+  {projects.length > 0 && <h2>projects</h2>}
+  {projects.map((p) => (
+    <div class="entry">
+      <a class="title" href={`/projects/${p.id}`}>{p.data.title}</a>
+      {p.data.tagline && <div class="tagline">{p.data.tagline}</div>}
+    </div>
+  ))}
+  {posts.length > 0 && <h2>posts</h2>}
+  {posts.map((p) => (
+    <div class="entry"><a class="title" href={`/blog/${p.id}`}>{p.data.title}</a></div>
+  ))}
+  <br />
+  <p><a href="/tags">← all tags</a></p>
+</Notebook>

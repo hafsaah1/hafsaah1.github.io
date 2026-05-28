@@ -1,0 +1,21 @@
+---
+import Notebook from '../../layouts/Notebook.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+---
+<Notebook title="blog">
+  <p style="opacity:.8">ramblings & writeups.</p>
+  <br />
+  {posts.map((p) => (
+    <div class="entry">
+      <a class="title" href={`/blog/${p.id}`}>{p.data.title}</a>
+      <div class="meta">{fmt(p.data.published)}</div>
+      {p.data.description && <div class="tagline">{p.data.description}</div>}
+      <div class="tags">{p.data.tags.map((t) => <a class="tag" href={`/tags/${t}`}>{t}</a>)}</div>
+    </div>
+  ))}
+  {posts.length === 0 && <p>no posts yet — add a markdown file in <code>src/content/blog/</code>.</p>}
+</Notebook>

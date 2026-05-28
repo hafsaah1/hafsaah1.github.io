@@ -1,0 +1,71 @@
+---
+import { SITE, NAV } from '../config';
+import '../styles/global.css';
+
+interface Props { title: string; }
+const { title } = Astro.props;
+const here = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) => (href === '/' ? here === '/' : here.startsWith(href));
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} · {SITE.title}</title>
+    <meta name="description" content={SITE.description} />
+    <link rel="icon" href="/favicon.svg" />
+    <script src="/planner.js" defer></script>
+  </head>
+  <body>
+    <div class="hobonichi-layout">
+      <!-- LEFT PAGE: weekly-planner navigation -->
+      <div id="left-page" class="left-page page">
+        <div class="header">
+          <p class="month-label" style="margin-left:4%"></p>
+          <button class="flip-page right menu-button" id="flip-right" aria-label="turn page">⤷</button>
+        </div>
+
+        {NAV.map((item, i) => (
+          <div class={`day${i === NAV.length - 1 ? ' last-day' : ''}`}>
+            <div class="date"></div>
+            <div class="menu1 handwritten">
+              <a href={item.href} class={isActive(item.href) ? 'active' : ''}>{item.label}</a>
+            </div>
+            <div class="menu3"></div>
+          </div>
+        ))}
+
+        <div class="quote">
+          <p class="lyrics" set:html={SITE.quote.join('<br>')}></p>
+        </div>
+      </div>
+
+      <!-- RIGHT PAGE: content -->
+      <div id="right-page" class="right-page page">
+        <div class="header handwritten">
+          <h1>{title}</h1>
+          <button class="flip-page left menu-button" id="flip-left" aria-label="turn page">⤶</button>
+        </div>
+
+        <div class="notes handwritten">
+          <slot />
+        </div>
+
+        <div class="quote">
+          <div class="quote-author">
+            <p style="margin-left:7%">{SITE.songQuote.title}</p>
+            <p>{SITE.songQuote.author}</p>
+          </div>
+          <div class="corner-calendar">
+            <div class="calendar-wrapper">
+              <div class="calendar" id="calendar"></div>
+              <div class="current-week-border" id="week-border"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

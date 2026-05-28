@@ -1,0 +1,25 @@
+---
+import Notebook from '../layouts/Notebook.astro';
+---
+<Notebook title="leave a comment">
+  <p style="opacity:.8">say hi! (this form is a placeholder until we wire up a
+     real guestbook backend — see the note below.)</p>
+  <br />
+  <form class="gb-form" onsubmit="event.preventDefault(); document.getElementById('gb-msg').style.display='block';">
+    <input type="text" placeholder="name" aria-label="name" required />
+    <input type="text" placeholder="website (optional)" aria-label="website" />
+    <textarea placeholder="message here" aria-label="message" required></textarea>
+    <button class="btn" type="submit">submit</button>
+  </form>
+  <p id="gb-msg" style="display:none;margin-top:10px">
+    ♥ thanks! (nothing was actually saved yet — hook up a free guestbook service
+    like <a href="https://github.com/giscus/giscus">giscus</a> or a tiny form
+    backend to make this real.)
+  </p>
+  <br />
+  <div class="entry">
+    <p class="c-name" style="text-decoration:underline;display:inline-block">Claude</p>
+    <span style="float:right;opacity:.6">5/27/2026</span>
+    <p>nice site! the planner layout looks great in baby blue. ♥</p>
+  </div>
+</Notebook>

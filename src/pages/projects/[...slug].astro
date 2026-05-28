@@ -1,0 +1,30 @@
+---
+import Notebook from '../../layouts/Notebook.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((p) => ({ params: { slug: p.id }, props: { entry: p } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const fmt = (x?: Date) => (x ? x.toISOString().slice(0, 10) : '');
+---
+<Notebook title={d.title}>
+  {d.tagline && <p style="opacity:.8;font-size:2.2vh">{d.tagline}</p>}
+  <div class="meta" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:6px 0">
+    <span class={`status ${d.status}`}>{d.status}</span>
+    {d.started && <span>{fmt(d.started)}{d.finished ? ` → ${fmt(d.finished)}` : ''}</span>}
+  </div>
+  <div class="tags">{d.tags.map((t) => <a class="tag" href={`/tags/${t}`}>{t}</a>)}</div>
+  <div class="btn-row">
+    {d.source && <a class="btn" href={d.source}>source ↗</a>}
+    {d.demo && <a class="btn" href={d.demo}>demo ↗</a>}
+  </div>
+  <hr style="border:none;border-top:1px dashed var(--lightborder);margin:10px 0" />
+  <Content />
+  <br />
+  <p><a href="/projects">← back to projects</a></p>
+</Notebook>
