@@ -2,19 +2,17 @@
 import Notebook from '../layouts/Notebook.astro';
 import { SITE } from '../config';
 
-const appId = SITE.guestbook?.cusdisAppId;
-const pageId = 'guestbook';
-const host = 'https://cusdis.com';
-const pageUrl = 'https://hafsaah1.github.io/guestbook';
-const pageTitle = 'Guestbook';
+const url = SITE.supabase?.url;
+const anonKey = SITE.supabase?.anonKey;
+const ready = Boolean(url && anonKey);
 ---
 <Notebook title="leave a comment">
-  {appId ? (
+  {ready ? (
     <>
       <form class="gb-form" id="gb-form">
-        <input id="gb-name" type="text" placeholder="name" aria-label="name" required />
-        <input id="gb-site" type="text" placeholder="website (optional)" aria-label="website" />
-        <textarea id="gb-msg" placeholder="message here" aria-label="message" required></textarea>
+        <input id="gb-name" type="text" placeholder="name" aria-label="name" maxlength="60" required />
+        <input id="gb-site" type="text" placeholder="website (optional)" aria-label="website" maxlength="200" />
+        <textarea id="gb-msg" placeholder="message here" aria-label="message" maxlength="1000" required></textarea>
         <button class="btn" type="submit">submit</button>
       </form>
       <p id="gb-status" style="display:none;margin-top:8px"></p>
@@ -22,51 +20,74 @@ const pageTitle = 'Guestbook';
       <hr style="border:none;border-top:1px dashed var(--lightborder);margin:14px 0" />
       <div id="gb-comments"><p style="opacity:.6">loading messages…</p></div>
 
-      <script is:inline define:vars={{ appId, pageId, host, pageUrl, pageTitle }}>
-        const api = host + '/api/open/comments';
+      <script is:inline define:vars={{ url, anonKey }}>
+        const endpoint = `${url}/rest/v1/guestbook`;
+        const headers = { apikey: anonKey, Authorization: `Bearer ${anonKey}` };
         const esc = (s) => (s || '').replace(/[&<>"]/g, (m) =>
           ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
         const fmt = (iso) => { const d = new Date(iso); return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`; };
+        const linkify = (w) => {
+          if (!w) return '';
+          const href = /^https?:\/\//.test(w) ? w : `https://${w}`;
+          return ` <a href="${esc(href)}" rel="nofollow noopener" target="_blank">website</a>`;
+        };
 
         async function load() {
           const box = document.getElementById('gb-comments');
           try {
-            const r = await fetch(`${api}?appId=${appId}&pageId=${pageId}&page=1&pageSize=50`);
-            const list = (await r.json())?.data?.data || [];
-            if (!list.length) { box.innerHTML = '<p style="opacity:.6">no messages yet — be the first! ♥</p>'; return; }
-            box.innerHTML = list.map((c) => {
-              const site = c.by_website ? ` <a href="${esc(c.by_website)}">website</a>` : '';
-              return `<div class="entry">
-                <span style="text-decoration:underline;font-weight:700">${esc(c.by_nickname || 'anon')}</span>${site}
-                <span style="float:right;opacity:.6">${fmt(c.createdAt)}</span>
-                <p style="margin-top:4px">${esc(c.content)}</p>
-              </div>`;
-            }).join('');
-          } catch (e) { box.innerHTML = '<p style="opacity:.6">couldn’t load messages right now.</p>'; }
+            const r = await fetch(`${endpoint}?select=name,website,message,created_at&order=created_at.desc&limit=100`, { headers });
+            const list = await r.json();
+            if (!Array.isArray(list) || !list.length) {
+              box.innerHTML = '<p style="opacity:.6">no messages yet — be the first! ♥</p>';
+              return;
+            }
+            box.innerHTML = list.map((c) => `
+              <div class="entry">
+                <span style="text-decoration:underline;font-weight:700">${esc(c.name)}</span>${linkify(c.website)}
+                <span style="float:right;opacity:.6">${fmt(c.created_at)}</span>
+                <p style="margin-top:4px">${esc(c.message)}</p>
+              </div>`).join('');
+          } catch (e) {
+            box.innerHTML = '<p style="opacity:.6">couldn’t load messages right now.</p>';
+          }
         }
 
         document.getElementById('gb-form').addEventListener('submit', async (e) => {
           e.preventDefault();
           const name = document.getElementById('gb-name').value.trim();
-          const site = document.getElementById('gb-site').value.trim();
-          const content = document.getElementById('gb-msg').value.trim();
+          const website = document.getElementById('gb-site').value.trim() || null;
+          const message = document.getElementById('gb-msg').value.trim();
           const status = document.getElementById('gb-status');
-          if (!name || !content) return;
+          if (!name || !message) return;
           status.style.display = 'block';
           status.textContent = 'sending…';
           try {
-            const body = { appId, pageId, pageUrl, pageTitle, content, nickname: name, email: '' };
-            if (site) body.website = site;
-            const r = await fetch(api, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-            if (r.ok) { status.innerHTML = '♥ thanks! your message shows up once i approve it.'; e.target.reset(); }
-            else { status.textContent = 'hmm, something went wrong — try again?'; }
-          } catch (err) { status.textContent = 'hmm, something went wrong — try again?'; }
+            const r = await fetch(endpoint, {
+              method: 'POST',
+              headers: { ...headers, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+              body: JSON.stringify({ name, website, message }),
+            });
+            if (r.ok) {
+              status.innerHTML = '♥ posted!';
+              e.target.reset();
+              load();
+            } else {
+              status.textContent = 'hmm, something went wrong — try again?';
+            }
+          } catch (err) {
+            status.textContent = 'hmm, something went wrong — try again?';
+          }
         });
 
         load();
       </script>
     </>
   ) : (
-    <p>guestbook needs a Cusdis app id in <code>src/config.ts</code>.</p>
+    <div>
+      <p>the guestbook just needs a free Supabase database hooked up. 🐑</p>
+      <p>follow <code>GUESTBOOK_SETUP.md</code> in the repo (create a project, run one
+         SQL snippet, copy your URL + key), then send me the keys or paste them into
+         <code>src/config.ts</code>.</p>
+    </div>
   )}
 </Notebook>

@@ -6,10 +6,10 @@ export const SITE = {
     'A digital planner: my projects, writing, and the things I like — ' +
     'robotics, ML, and embedded systems.',
   emails: ['hafsahmed1122@gmail.com', 'hafsaah@bu.edu'],
-  // Open guestbook via Cusdis (free, no login for visitors).
-  // Get an App ID: sign up at https://cusdis.com → "Add Website" → copy the
-  // "App ID" → paste it below. The guestbook turns on automatically once set.
-  guestbook: { cusdisAppId: '0037c318-0b58-4d9c-94c0-38c24120362a' },
+  // Guestbook backend: a free Supabase database (instant, no moderation).
+  // One-time setup is in GUESTBOOK_SETUP.md. After it, paste your
+  // Project URL + anon (public) key here and the guestbook turns on.
+  supabase: { url: '', anonKey: '' },
   // shown bottom-left on the planner page (sheep uses song lyrics here)
   quote: [
     'building little machines that understand words,',
