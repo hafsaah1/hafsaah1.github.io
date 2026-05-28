@@ -5,7 +5,7 @@ export const SITE = {
   description:
     'A digital planner: my projects, writing, and the things I like — ' +
     'robotics, ML, and embedded systems.',
-  emails: ['hafsahmed1122@gmail.com', 'hafsaah@bu.edu'],
+  emails: ['hafsaah@bu.edu', 'hafsahmed1122@gmail.com'],
   // Guestbook backend: a free Supabase database (instant, no moderation).
   // One-time setup is in GUESTBOOK_SETUP.md. After it, paste your
   // Project URL + anon (public) key here and the guestbook turns on.
