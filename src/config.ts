@@ -9,7 +9,10 @@ export const SITE = {
   // Guestbook backend: a free Supabase database (instant, no moderation).
   // One-time setup is in GUESTBOOK_SETUP.md. After it, paste your
   // Project URL + anon (public) key here and the guestbook turns on.
-  supabase: { url: '', anonKey: '' },
+  supabase: {
+    url: 'https://wvmsumpisqevhacprtzk.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind2bXN1bXBpc3FldmhhY3BydHprIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5Mjc1MjgsImV4cCI6MjA5NTUwMzUyOH0.RwoG1PHrwCql3hAvrJv3V_2ACv9rmiAoxCnFTKu2-y4',
+  },
   // shown bottom-left on the planner page (sheep uses song lyrics here)
   quote: [
     'building little machines that understand words,',
