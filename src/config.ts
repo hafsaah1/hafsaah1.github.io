@@ -5,7 +5,7 @@ export const SITE = {
   description:
     'A digital planner: my projects, writing, and the things I like — ' +
     'robotics, ML, and embedded systems.',
-  email: 'bloxhead848@gmail.com',
+  emails: ['hafsahmed1122@gmail.com', 'hafsaah@bu.edu'],
   // shown bottom-left on the planner page (sheep uses song lyrics here)
   quote: [
     'building little machines that understand words,',

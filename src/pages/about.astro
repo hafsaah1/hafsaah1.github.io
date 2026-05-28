@@ -18,6 +18,6 @@ import { SITE } from '../config';
   <h2>find me</h2>
   <ul>
     {SITE.links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
-    <li>email: <a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+    {SITE.emails.map((e) => <li>email: <a href={`mailto:${e}`}>{e}</a></li>)}
   </ul>
 </Notebook>

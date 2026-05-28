@@ -6,7 +6,7 @@ import { SITE } from '../config';
   <h2>me</h2>
   <ul>
     {SITE.links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
-    <li>email: <a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+    {SITE.emails.map((e) => <li>email: <a href={`mailto:${e}`}>{e}</a></li>)}
   </ul>
   <br />
   <h2>webring</h2>
@@ -14,9 +14,4 @@ import { SITE } from '../config';
      <a href="https://webring.nekoweb.org/">nekoweb webring</a> or the
      <a href="https://webring.xxiivv.com/">xxiivv webring</a> — those
      <code>← →</code> arrows that hop between indie sites.</p>
-  <br />
-  <h2>sites i like</h2>
-  <ul>
-    <li><a href="https://sheep.nekoweb.org">sheep's site</a> (the inspiration ♥)</li>
-  </ul>
 </Notebook>
