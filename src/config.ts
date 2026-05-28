@@ -9,7 +9,7 @@ export const SITE = {
   // Open guestbook via Cusdis (free, no login for visitors).
   // Get an App ID: sign up at https://cusdis.com → "Add Website" → copy the
   // "App ID" → paste it below. The guestbook turns on automatically once set.
-  guestbook: { cusdisAppId: '' },
+  guestbook: { cusdisAppId: '0037c318-0b58-4d9c-94c0-38c24120362a' },
   // shown bottom-left on the planner page (sheep uses song lyrics here)
   quote: [
     'building little machines that understand words,',
