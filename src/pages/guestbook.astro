@@ -3,35 +3,70 @@ import Notebook from '../layouts/Notebook.astro';
 import { SITE } from '../config';
 
 const appId = SITE.guestbook?.cusdisAppId;
+const pageId = 'guestbook';
+const host = 'https://cusdis.com';
+const pageUrl = 'https://hafsaah1.github.io/guestbook';
+const pageTitle = 'Guestbook';
 ---
 <Notebook title="leave a comment">
-  <p style="opacity:.8">say hi! leave a name + message below ♥ (no account needed)</p>
-  <br />
-
   {appId ? (
     <>
-      <div
-        id="cusdis_thread"
-        data-host="https://cusdis.com"
-        data-app-id={appId}
-        data-page-id="guestbook"
-        data-page-url="https://hafsaah1.github.io/guestbook"
-        data-page-title="Guestbook"
-      ></div>
-      <script is:inline async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+      <form class="gb-form" id="gb-form">
+        <input id="gb-name" type="text" placeholder="name" aria-label="name" required />
+        <input id="gb-site" type="text" placeholder="website (optional)" aria-label="website" />
+        <textarea id="gb-msg" placeholder="message here" aria-label="message" required></textarea>
+        <button class="btn" type="submit">submit</button>
+      </form>
+      <p id="gb-status" style="display:none;margin-top:8px"></p>
+
+      <hr style="border:none;border-top:1px dashed var(--lightborder);margin:14px 0" />
+      <div id="gb-comments"><p style="opacity:.6">loading messages…</p></div>
+
+      <script is:inline define:vars={{ appId, pageId, host, pageUrl, pageTitle }}>
+        const api = host + '/api/open/comments';
+        const esc = (s) => (s || '').replace(/[&<>"]/g, (m) =>
+          ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
+        const fmt = (iso) => { const d = new Date(iso); return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`; };
+
+        async function load() {
+          const box = document.getElementById('gb-comments');
+          try {
+            const r = await fetch(`${api}?appId=${appId}&pageId=${pageId}&page=1&pageSize=50`);
+            const list = (await r.json())?.data?.data || [];
+            if (!list.length) { box.innerHTML = '<p style="opacity:.6">no messages yet — be the first! ♥</p>'; return; }
+            box.innerHTML = list.map((c) => {
+              const site = c.by_website ? ` <a href="${esc(c.by_website)}">website</a>` : '';
+              return `<div class="entry">
+                <span style="text-decoration:underline;font-weight:700">${esc(c.by_nickname || 'anon')}</span>${site}
+                <span style="float:right;opacity:.6">${fmt(c.createdAt)}</span>
+                <p style="margin-top:4px">${esc(c.content)}</p>
+              </div>`;
+            }).join('');
+          } catch (e) { box.innerHTML = '<p style="opacity:.6">couldn’t load messages right now.</p>'; }
+        }
+
+        document.getElementById('gb-form').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const name = document.getElementById('gb-name').value.trim();
+          const site = document.getElementById('gb-site').value.trim();
+          const content = document.getElementById('gb-msg').value.trim();
+          const status = document.getElementById('gb-status');
+          if (!name || !content) return;
+          status.style.display = 'block';
+          status.textContent = 'sending…';
+          try {
+            const body = { appId, pageId, pageUrl, pageTitle, content, nickname: name, email: '' };
+            if (site) body.website = site;
+            const r = await fetch(api, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+            if (r.ok) { status.innerHTML = '♥ thanks! your message shows up once i approve it.'; e.target.reset(); }
+            else { status.textContent = 'hmm, something went wrong — try again?'; }
+          } catch (err) { status.textContent = 'hmm, something went wrong — try again?'; }
+        });
+
+        load();
+      </script>
     </>
   ) : (
-    <div>
-      <p>the guestbook is almost ready! 🐑 it just needs a free Cusdis app id:</p>
-      <ul>
-        <li>go to <a href="https://cusdis.com">cusdis.com</a> and sign up (free)</li>
-        <li>click <strong>Add Website</strong>, name it whatever</li>
-        <li>copy the <strong>App ID</strong> it gives you</li>
-        <li>paste it into <code>src/config.ts</code> (the <code>cusdisAppId</code> line)
-            — or just send it to me</li>
-      </ul>
-      <p style="opacity:.7">then anyone can leave a message here, and you approve
-         them from your cusdis dashboard.</p>
-    </div>
+    <p>guestbook needs a Cusdis app id in <code>src/config.ts</code>.</p>
   )}
 </Notebook>
