@@ -9,34 +9,16 @@ tags: [python, mujoco, clip, robotics, computer-vision, machine-learning]
 source: https://github.com/hafsaah1/langPickArm
 ---
 
-Type *"put the red block on the blue plate"* and watch a Franka Panda arm do it.
-You can also stack things: blocks on blocks, plates on blocks, whatever.
+Type something like *"put the red block on the blue plate"* and a Franka arm does
+it — picking and stacking blocks/plates however you ask.
 
-## how it works
+The trick: **CLIP** reads your words and figures out which object you mean from
+images of the scene, then a scripted controller handles the actual arm motion.
+Same idea as the big language-to-robot papers (CLIPort, VIMA, RT-2) — just
+smaller, built in a weekend.
 
-```
-text prompt ──► CLIP text encoder ─────────────┐
-                                                │ cosine
-render RGB + segmentation ─► CLIP image encoder ┤ similarity ─► target object
-                                                ┘                    │
-                                                                     ▼
-                          scripted IK: move ─► grasp ─► lift ─► place
-```
+A few fun bits:
 
-The "intelligence" is **CLIP doing grounding** — it matches your words to the
-right object from cropped images of the scene. The manipulation is a **scripted
-damped-least-squares IK** controller. It's the same language → object → motion
-recipe as CLIPort / VIMA / RT-2, just with a smaller hammer.
-
-## what it actually decides
-
-For *"stack the red block on the green block"*, CLIP scores every object and
-picks correctly — telling apart both color **and** block-vs-plate shape:
-
-> red_block 0.344 (pick), green_block 0.347 (place) — both beat the distractors.
-
-## things i learned
-
-- MuJoCo segmentation rendering gives you clean per-object crops for free.
-- A kinematic-attach grasp is way more robust for a demo than fighting contact physics.
-- CLIP is a shockingly good zero-shot grounding model for ~one line of code.
+- it tells a red *block* from a red *plate* by shape, not just color
+- "attaching" the object to the gripper is way more reliable than simulating real grip physics
+- CLIP is shockingly good at this for basically one line of code
