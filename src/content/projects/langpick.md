@@ -9,6 +9,8 @@ tags: [python, mujoco, clip, robotics, computer-vision, machine-learning]
 source: https://github.com/hafsaah1/langPickArm
 ---
 
+![LangPick — Franka arm doing a natural-language pick-and-place](/langpick.gif)
+
 Type something like *"put the red block on the blue plate"* and a Franka arm does
 it — picking and stacking blocks/plates however you ask.
 
