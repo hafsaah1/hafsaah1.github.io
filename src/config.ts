@@ -6,6 +6,10 @@ export const SITE = {
     'A digital planner: my projects, writing, and the things I like — ' +
     'robotics, ML, and embedded systems.',
   emails: ['hafsahmed1122@gmail.com', 'hafsaah@bu.edu'],
+  // Open guestbook via Cusdis (free, no login for visitors).
+  // Get an App ID: sign up at https://cusdis.com → "Add Website" → copy the
+  // "App ID" → paste it below. The guestbook turns on automatically once set.
+  guestbook: { cusdisAppId: '' },
   // shown bottom-left on the planner page (sheep uses song lyrics here)
   quote: [
     'building little machines that understand words,',

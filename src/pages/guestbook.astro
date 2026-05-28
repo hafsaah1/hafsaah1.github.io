@@ -1,19 +1,37 @@
 ---
 import Notebook from '../layouts/Notebook.astro';
+import { SITE } from '../config';
+
+const appId = SITE.guestbook?.cusdisAppId;
 ---
 <Notebook title="leave a comment">
-  <p style="opacity:.8">say hi! (this form is a placeholder until we wire up a
-     real guestbook backend — see the note below.)</p>
+  <p style="opacity:.8">say hi! leave a name + message below ♥ (no account needed)</p>
   <br />
-  <form class="gb-form" onsubmit="event.preventDefault(); document.getElementById('gb-msg').style.display='block';">
-    <input type="text" placeholder="name" aria-label="name" required />
-    <input type="text" placeholder="website (optional)" aria-label="website" />
-    <textarea placeholder="message here" aria-label="message" required></textarea>
-    <button class="btn" type="submit">submit</button>
-  </form>
-  <p id="gb-msg" style="display:none;margin-top:10px">
-    ♥ thanks! (nothing was actually saved yet — hook up a free guestbook service
-    like <a href="https://github.com/giscus/giscus">giscus</a> or a tiny form
-    backend to make this real.)
-  </p>
+
+  {appId ? (
+    <>
+      <div
+        id="cusdis_thread"
+        data-host="https://cusdis.com"
+        data-app-id={appId}
+        data-page-id="guestbook"
+        data-page-url="https://hafsaah1.github.io/guestbook"
+        data-page-title="Guestbook"
+      ></div>
+      <script is:inline async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+    </>
+  ) : (
+    <div>
+      <p>the guestbook is almost ready! 🐑 it just needs a free Cusdis app id:</p>
+      <ul>
+        <li>go to <a href="https://cusdis.com">cusdis.com</a> and sign up (free)</li>
+        <li>click <strong>Add Website</strong>, name it whatever</li>
+        <li>copy the <strong>App ID</strong> it gives you</li>
+        <li>paste it into <code>src/config.ts</code> (the <code>cusdisAppId</code> line)
+            — or just send it to me</li>
+      </ul>
+      <p style="opacity:.7">then anyone can leave a message here, and you approve
+         them from your cusdis dashboard.</p>
+    </div>
+  )}
 </Notebook>
