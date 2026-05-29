@@ -40,3 +40,11 @@ Everything runs in MuJoCo + Python (Gaussian processes, an EnKF I validated
 myself, ensemble-sensitivity targeting), and every result is reproducible from the
 repo. Built fast, kept honest — including the experiments that didn't flatter the
 idea until I fixed them.
+
+**Applied, with real NASA data.** The same "where do you put limited sensors?"
+engine answers a real decision: I pull **NASA POWER** climatology (a NASA Langley
+product) and design an optimal **monitoring network** for a Montana region — the
+kind of thing an under-resourced conservation district actually needs. Real
+data → recommended stations on a map → a decision brief.
+
+![Recommended monitoring network over Montana — NASA POWER annual precipitation, with the stations placed to best reconstruct the regional field](/atmoscout-monitoring.png)
