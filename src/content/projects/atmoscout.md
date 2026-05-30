@@ -52,9 +52,10 @@ state boundaries.
 
 ![GIS monitoring network over Montana — NASA POWER annual precipitation as a georeferenced raster, with state boundaries and ALC-placed stations in WGS84](/atmoscout-monitoring.png)
 
-And real **satellite** remote sensing too: I pull **MODIS/Terra** imagery from
-**NASA GIBS** (open, no login), georeference it to a GeoTIFF, and drop the
-proposed monitoring network on top — the actual landscape (and wildfire smoke) the
-network would watch.
+And real **satellite remote sensing**, analyzed end-to-end: I pull numeric
+**MODIS/Terra evapotranspiration** (MOD16A2GF, 500 m — the quantity OpenET serves)
+from NASA's ORNL DAAC, handle the native **MODIS Sinusoidal** projection,
+**reproject to WGS84**, and design the water-monitoring network on the *real ET
+field*. (I also grab MODIS true-color imagery from NASA GIBS for context.)
 
-![MODIS Terra true-color satellite imagery of Montana from NASA GIBS, georeferenced, with state boundaries and the proposed monitoring stations overlaid](/atmoscout-satellite.png)
+![MODIS evapotranspiration over central Montana, reprojected from Sinusoidal to WGS84, with an ALC-designed water-monitoring network overlaid](/atmoscout-et.png)
