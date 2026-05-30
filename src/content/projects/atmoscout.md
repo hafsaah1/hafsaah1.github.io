@@ -51,3 +51,10 @@ real GIS *end products*: a georeferenced **GeoTIFF** of the precipitation field
 state boundaries.
 
 ![GIS monitoring network over Montana — NASA POWER annual precipitation as a georeferenced raster, with state boundaries and ALC-placed stations in WGS84](/atmoscout-monitoring.png)
+
+And real **satellite** remote sensing too: I pull **MODIS/Terra** imagery from
+**NASA GIBS** (open, no login), georeference it to a GeoTIFF, and drop the
+proposed monitoring network on top — the actual landscape (and wildfire smoke) the
+network would watch.
+
+![MODIS Terra true-color satellite imagery of Montana from NASA GIBS, georeferenced, with state boundaries and the proposed monitoring stations overlaid](/atmoscout-satellite.png)
