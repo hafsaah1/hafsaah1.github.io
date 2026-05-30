@@ -41,10 +41,13 @@ myself, ensemble-sensitivity targeting), and every result is reproducible from t
 repo. Built fast, kept honest — including the experiments that didn't flatter the
 idea until I fixed them.
 
-**Applied, with real NASA data.** The same "where do you put limited sensors?"
-engine answers a real decision: I pull **NASA POWER** climatology (a NASA Langley
-product) and design an optimal **monitoring network** for a Montana region — the
-kind of thing an under-resourced conservation district actually needs. Real
-data → recommended stations on a map → a decision brief.
+**Applied, with real NASA data + a real GIS workflow.** The same "where do you put
+limited sensors?" engine answers a real decision: I pull **NASA POWER** climatology
+(a NASA Langley product) and design an optimal **monitoring network** for a Montana
+region — the kind of thing an under-resourced conservation district actually needs.
+Built with an actual geospatial stack (**geopandas + rasterio + pyproj**), it ships
+real GIS *end products*: a georeferenced **GeoTIFF** of the precipitation field
+(EPSG:4326), a **GeoPackage** of the recommended stations, and a CRS-aware map with
+state boundaries.
 
-![Recommended monitoring network over Montana — NASA POWER annual precipitation, with the stations placed to best reconstruct the regional field](/atmoscout-monitoring.png)
+![GIS monitoring network over Montana — NASA POWER annual precipitation as a georeferenced raster, with state boundaries and ALC-placed stations in WGS84](/atmoscout-monitoring.png)
